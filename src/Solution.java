@@ -1,24 +1,29 @@
 import java.util.ArrayDeque;
+import java.util.HashMap;
 
 public class Solution {
     public static int solution(int N, int K){
-        ArrayDeque<Integer> deque = new ArrayDeque<>();
-        for (int i = 1; i <= N; i++) {
-            deque.addLast(i);
-        }
-
-        while (deque.size() > 1) {
-            for (int i = 0; i < K - 1; i++) {
-                deque.addLast(deque.pollFirst());
-            }
-            deque.pollFirst();
-        }
-        return deque.pollFirst();
+        return 1;
     }
 
     public static void main(String[] args) {
-        int n = solution(5,3);
-        System.out.println(n);
+        HashMap<String, Integer> hashMap = new HashMap<>();
+
+        hashMap.put("ABC",10);
+        hashMap.put("BBB",20);
+        hashMap.put("AAA",30);
+        hashMap.put("ABC",15);
+
+        System.out.println(hashMap.isEmpty());
+        System.out.println(hashMap.get("ABC"));
+        System.out.println(hashMap.containsKey("ABC"));
+
+        hashMap.remove("ABC");
+        System.out.println(hashMap.size());
+
+        hashMap.clear();
+        System.out.println(hashMap.isEmpty());
+
 
     }
 
