@@ -1,29 +1,23 @@
-import java.util.ArrayDeque;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class Solution {
-    public static int solution(int N, int K){
-        return 1;
+    private static boolean solution(int [] arr, int target){
+        HashSet<Integer> hashSet = new HashSet<>();
+
+        for (int i : arr) {
+            if (hashSet.contains(target - i)) {
+                return true;
+            }
+            hashSet.add(i);
+        }
+        return false;
     }
-
     public static void main(String[] args) {
-        HashMap<String, Integer> hashMap = new HashMap<>();
-
-        hashMap.put("ABC",10);
-        hashMap.put("BBB",20);
-        hashMap.put("AAA",30);
-        hashMap.put("ABC",15);
-
-        System.out.println(hashMap.isEmpty());
-        System.out.println(hashMap.get("ABC"));
-        System.out.println(hashMap.containsKey("ABC"));
-
-        hashMap.remove("ABC");
-        System.out.println(hashMap.size());
-
-        hashMap.clear();
-        System.out.println(hashMap.isEmpty());
-
+        int[] arr = {1, 2, 3, 4, 8};
+        int[] arr2 = {2, 3, 5, 9};
+        System.out.println(solution(arr, 6));
+        System.out.println(solution(arr2, 10));
 
     }
 
