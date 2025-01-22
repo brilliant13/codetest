@@ -26,14 +26,23 @@ public class Solution_dijkstra {
 
         int[] dist = new int[n];
         Arrays.fill(dist, Integer.MAX_VALUE);
+        boolean[]visited = new boolean[n];
 
-        dist[start]=0;
+
 
         PriorityQueue<Node> pq = new PriorityQueue<>((o1, o2) -> Integer.compare(o1.cost, o2.cost));
+        dist[start]=0;
         pq.add(new Node(start, 0));
 
         while (!pq.isEmpty()) {
             Node now = pq.poll();
+
+            if (visited[now.dest]) {
+                continue;
+            }
+            visited[now.dest]=true;
+
+
             if (dist[now.dest]<now.cost)
                 continue;
             for (Node next : adjList[now.dest]) {
