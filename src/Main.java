@@ -1,95 +1,57 @@
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.StringTokenizer;
 
 public class Main {
 
-    public static int[] stack;
-    public static int size = 0;
-
+    static ArrayList<ArrayList<Integer>> graph = new ArrayList<>();
+    static int[] check;
+    static int sequence;
 
     public static void main(String[] args) throws IOException {
-
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+        int N = Integer.parseInt(st.nextToken()); //정점의 수
+        int M = Integer.parseInt(st.nextToken()); //간선의 수
+        int R = Integer.parseInt(st.nextToken()); //시작정점
 
-        StringTokenizer st;
+        check = new int[N + 1];
 
-        int N = Integer.parseInt(br.readLine());
+        for (int i = 0; i < N + 1; i++) {
+            graph.add(new ArrayList<>());
+        }
 
-        stack = new int[N];
+        for (int i = 0; i < M; i++) {
+            st = new StringTokenizer(br.readLine());
+            int fromVertex = Integer.parseInt(st.nextToken());
+            int toVertex = Integer.parseInt(st.nextToken());
+            graph.get(fromVertex).add(toVertex);
+            graph.get(toVertex).add(fromVertex);
+        }
 
-        while (N-- > 0) {
-            st = new StringTokenizer(br.readLine(), " ");
+        for (int i = 1; i < graph.size(); i++) {
+            Collections.sort(graph.get(i),Collections.reverseOrder());
+        }
+        sequence = 1;
+        dfs(R);
+        for (int i = 1; i < check.length; i++) {
+            sb.append(check[i]).append('\n');
+        }
+        System.out.println(sb);
+    }
 
-            switch (st.nextToken()) {
-
-                case "push":
-                    push(Integer.parseInt(st.nextToken()));
-                    break;
-
-                case "pop":
-                    bw.write(pop() + "\n");
-                    break;
-
-                case "size":
-                    bw.write(size()+"\n");
-                    break;
-
-                case "empty":
-                    bw.write(String.valueOf(empty()));
-                    bw.append('\n');
-                    break;
-
-                case "top":
-                    bw.write(String.valueOf(top()));
-                    bw.append('\n');
-                    break;
+    private static void dfs(int vertex) {
+        check[vertex]= sequence;
+        for (int i = 0; i < graph.get(vertex).size(); i++) {
+            int newVertex = graph.get(vertex).get(i);
+            if (check[newVertex] == 0) {
+                sequence ++;
+                dfs(newVertex);
             }
-
-        }
-        br.close();
-        bw.flush();
-        bw.close();
-    }
-
-    public static void push(int item) {
-        stack[size] = item;
-        size++;
-    }
-
-    public static int pop() {
-        if(size == 0) {
-            return -1;
-        }
-        else {
-            int res = stack[size - 1];
-            stack[size - 1] = 0;
-            size--;
-            return res;
         }
     }
 
-    public static int size() {
-        return size;
-    }
-
-    public static int empty() {
-        if(size == 0) {
-            return 1;
-        }
-        else {
-            return 0;
-        }
-    }
-
-    public static int top() {
-        if(size == 0) {
-            return -1;
-        }
-        else {
-            return stack[size - 1];
-        }
-    }
 
 }
