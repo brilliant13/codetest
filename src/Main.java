@@ -1,57 +1,37 @@
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
 
-    static ArrayList<ArrayList<Integer>> graph = new ArrayList<>();
-    static int[] check;
-    static int sequence;
-
     public static void main(String[] args) throws IOException {
+
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb = new StringBuilder();
-        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
-        int N = Integer.parseInt(st.nextToken()); //정점의 수
-        int M = Integer.parseInt(st.nextToken()); //간선의 수
-        int R = Integer.parseInt(st.nextToken()); //시작정점
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        check = new int[N + 1];
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int N = Integer.parseInt(st.nextToken());
+        int arr[] = new int[N];
+        int M = Integer.parseInt(st.nextToken());
+        int temp;
 
-        for (int i = 0; i < N + 1; i++) {
-            graph.add(new ArrayList<>());
+        for (int i = 0; i < arr.length; i++) {
+            arr[i]=i+1;
         }
-
-        for (int i = 0; i < M; i++) {
+        for (int j = 0; j < M; j++) {
             st = new StringTokenizer(br.readLine());
-            int fromVertex = Integer.parseInt(st.nextToken());
-            int toVertex = Integer.parseInt(st.nextToken());
-            graph.get(fromVertex).add(toVertex);
-            graph.get(toVertex).add(fromVertex);
-        }
 
-        for (int i = 1; i < graph.size(); i++) {
-            Collections.sort(graph.get(i),Collections.reverseOrder());
+            int I = Integer.parseInt(st.nextToken());
+            int J = Integer.parseInt(st.nextToken());
+
+            temp = arr[I - 1];
+            arr[I - 1] = arr[J - 1];
+            arr[J-1]=temp;
         }
-        sequence = 1;
-        dfs(R);
-        for (int i = 1; i < check.length; i++) {
-            sb.append(check[i]).append('\n');
+        for (int k = 0; k < arr.length; k++) {
+            bw.write(arr[k]+" ");
         }
-        System.out.println(sb);
+        br.close();
+        bw.flush();
+        bw.close();
     }
-
-    private static void dfs(int vertex) {
-        check[vertex]= sequence;
-        for (int i = 0; i < graph.get(vertex).size(); i++) {
-            int newVertex = graph.get(vertex).get(i);
-            if (check[newVertex] == 0) {
-                sequence ++;
-                dfs(newVertex);
-            }
-        }
-    }
-
-
 }
