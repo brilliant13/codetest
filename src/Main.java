@@ -36,6 +36,10 @@ public class Main {
                     x = Integer.parseInt(command[1]);
                     S ^= (1<<(x-1)); //x 토글
                     break;
+                case "all":
+                    //all: S를 {1, 2, ..., 20} 으로 바꾼다.
+                    S = (1<<20)-1; //모든 비트를 1로 (1~20 전체 집합) 2^n-1
+                    break;
                 case "empty":
                     S = 0; //모든 비트를 0으로 (공집합)
                     break;
