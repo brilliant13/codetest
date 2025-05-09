@@ -1,50 +1,42 @@
 import java.io.*;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
         StringBuilder sb = new StringBuilder();
 
-        int M = Integer.parseInt(br.readLine());
-        int S = 0; //공집합으로 시작
+        int N = Integer.parseInt(st.nextToken()); // 듣도 못한 사람
+        int M = Integer.parseInt(st.nextToken()); // 보도 못한 사람
+//        int count = 0;
+        String s = "";
+        HashMap<String, Integer> map = new HashMap<>();
+        List<String> result = new ArrayList<>(); //결과를 저장할 리스트
 
-        for (int i = 0; i < M; i++) {
-            String[] command = br.readLine().split(" ");
-            String operation = command[0];
-
-            switch(operation) {
-                case "add":
-                    //add x: S에 x를 추가한다. (1 ≤ x ≤ 20) S에 x가 이미 있는 경우에는 연산을 무시한다.
-                    int x = Integer.parseInt(command[1]);
-                    S |= (1<<(x-1)); //x를 추가. 인덱스 0번부터 원소1번으로 쓴다.
-                    break;
-                case "remove":
-                    //remove x: S에서 x를 제거한다. (1 ≤ x ≤ 20) S에 x가 없는 경우에는 연산을 무시한다.
-                    x = Integer.parseInt(command[1]);
-                    S &= ~(1<<(x-1)); //x를 제거
-                    break;
-                case "check":
-                    x = Integer.parseInt(command[1]);
-                    if ((S & (1 << (x - 1))) != 0) {
-                        sb.append("1\n");
-                    } else {
-                        sb.append("0\n");
-                    }
-                    break;
-                case "toggle":
-                    //toggle x: S에 x가 있으면 x를 제거하고, 없으면 x를 추가한다. (1 ≤ x ≤ 20)
-                    x = Integer.parseInt(command[1]);
-                    S ^= (1<<(x-1)); //x 토글
-                    break;
-                case "all":
-                    //all: S를 {1, 2, ..., 20} 으로 바꾼다.
-                    S = (1<<20)-1; //모든 비트를 1로 (1~20 전체 집합) 2^n-1
-                    break;
-                case "empty":
-                    S = 0; //모든 비트를 0으로 (공집합)
-                    break;
-             }
+        // 듣도 못한 사람
+        for (int i = 0; i < N; i++) {
+            s = br.readLine();
+            map.put(s, 1);
         }
-        System.out.println(sb);
+        // 보도 못한 사람
+        for (int j = 0; j < M; j++) {
+            s = br.readLine();
+            if (map.containsKey(s)) {
+//                count++;
+//                sb.append(s).append("\n");
+                result.add(s);
+            }
+        }
+
+        //결과 리스트를 사전순으로 정렬
+        Collections.sort(result);
+
+        sb.append(result.size()).append("\n"); //듣보잡 수. Collection객체의 size() 메소드 활용. ArrayList의 크기반환
+        for (String name : result) {
+            sb.append(name).append('\n'); //듣보잡 명단
+        }
+        System.out.print(sb);
+
     }
 }
