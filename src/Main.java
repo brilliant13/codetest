@@ -3,35 +3,33 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Main {
-    static int N, count;
-    static boolean[] col; //열 사용 여부
-    static boolean[] d1; // diagonal1. ↙↗ 대각선 (r+c)
-    static boolean[] d2; // diagonal2. ↘↖ 대각선 (r-c+N-1)
+    static int N;
+    static long count;
+    static int MASK; //하위 N비트 1
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
-        col = new boolean[N];
-        d1 = new boolean[2 * N - 1];
-        d2 = new boolean[2 * N - 1];
-        dfs(0);
+        MASK = (1<<N) -1; //하위 N비트가 전부 1
+        dfs(0,0,0,0); //cols, diag1, diag2, row
         System.out.print(count);
     }
 
-    static void dfs(int r) {
-        if (r == N) {
+    // cols: 사용 중인 열, diag1: ↙↗ 대각(다음행에서 <<1), diag2: ↘↖ 대각(다음행에서 >>1)
+    static void dfs(int cols, int diag1, int diag2, int row) {
+        if (row == N) { //N행 모두 배치 완료
             count++;
             return;
         }
-        for (int c = 0; c < N; c++) {
-            int a = r + c, b = r - c + (N - 1);
-            if (col[c] || d1[a] || d2[b]) continue;
-            col[c] = d1[a] = d2[b] = true;
-            dfs(r + 1);
-            col[c] = d1[a] = d2[b] = false;
+
+        int available = ~(cols | diag1 | diag2) & MASK; //이번 행에서 가능한 자리들
+
+        while (available != 0) {
+            int p = available & -available; //최하위 1비트만 선택
+            available -= p; //해당 자리 제거
+
+            dfs(cols | p, (diag1 | p) << 1 & MASK, (diag2 | p) >> 1, row + 1);
+            // & MASK: 왼쪽 시프트 후 상위 비트 잘라내기 (안전)
         }
-
     }
-
-
 }
