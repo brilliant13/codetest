@@ -11,11 +11,11 @@ public class TreeTraversal {
     public void init(char data, char leftData, char rightData) {
         if (this.root == null) {
             root = new Node(data);
-            if (leftData != 0) {
+            if (leftData != '.') {
                 root.left = new Node(leftData);
             }
 
-            if (rightData != 0) {
+            if (rightData != '.') {
                 root.right = new Node(rightData);
             }
         } else {
