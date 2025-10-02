@@ -12,17 +12,16 @@ public class Main {
         //String[] -> Stream<String> -> IntStream or Stream<Integer> -> int[]
         int[] a = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
 
-        int[] dp = new int[N]; //dp[i]: a[i]로 끝나는 LIS길이. 최장증가부분수열
-        Arrays.fill(dp, 1);
+        int[] tails = new int[N];
+        int len = 0;
 
-        int ans = 1;
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < i; j++) {
-                if(a[j] < a[i]) dp[i] = Math.max(dp[i], dp[j] + 1);
-            }
-            ans = Math.max(ans,dp[i]);
+        for (int x : a) {
+            int pos = Arrays.binarySearch(tails, 0, len, x);
+            if(pos<0) pos = -(pos+1); //삽입위치 (lower_bound)
+            tails[pos] = x;
+            if(pos == len) len++;
         }
-        System.out.println(ans);
+        System.out.println(len);
     }
 
 
