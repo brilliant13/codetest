@@ -1,28 +1,34 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 
 public class Main {
+    static StringBuilder sb = new StringBuilder();
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int N = Integer.parseInt(br.readLine());
-        // 10,20,10,30,20,50
-        //String[] -> Stream<String> -> IntStream or Stream<Integer> -> int[]
-        int[] a = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
-
-        int[] tails = new int[N];
-        int len = 0;
-
-        for (int x : a) {
-            int pos = Arrays.binarySearch(tails, 0, len, x);
-            if(pos<0) pos = -(pos+1); //삽입위치 (lower_bound)
-            tails[pos] = x;
-            if(pos == len) len++;
+        int M = Integer.parseInt(br.readLine());
+        String S = br.readLine();
+        int count = 0;
+        int ioi = 0;
+        // "OOIOIOIOIIOII"
+        // 문자열 길이만큼 선형 탐색 O(M)
+        for (int i = 0; i + 2 < M; ) {
+            //"IOI"
+            if (S.charAt(i) == 'I' && S.charAt(i + 1) == 'O' && S.charAt(i + 2) == 'I') {
+//                System.out.println("i = " + i);
+                ioi++;
+                if (ioi >= N) { //IOIIOIIOIOOO N이 1, ioi가 3이면 count가 계속 올라가야함
+                    count++;
+                }
+                i += 2;
+            } else {
+                //패턴깨지면 초기화
+                ioi = 0;
+                i++;
+            }
         }
-        System.out.println(len);
+        System.out.println(count);
     }
-
-
 }
